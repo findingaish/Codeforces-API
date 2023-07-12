@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300;400&display=swap');
+    </style>
+</head>
+<body style="background-color:  #b7d7e8;">
+    <div class="header">
+        <div class="menu" id="tabs">
+            <a href="index.html">HOME</a>
+            <a href="https://codeforces.com/top">TOP</a>
+            <a href="https://codeforces.com/contests">CONTESTS</a>
+            <a href="https://codeforces.com/gyms">GYM</a>
+            <a href="https://codeforces.com/problemset">PROBLEMSET</a>
+            <a href="https://codeforces.com/groups">GROUPS</a>
+            <a href="https://codeforces.com/ratings">RATING</a>
+            <a href="https://codeforces.com/edu/courses">EDU</a>
+            <a href="https://codeforces.com/apiHelp" target="_blank">API</a>
+            <a href="https://codeforces.com/calendar">CALENDAR</a>
+            <a href="https://codeforces.com/help">HELP</a>
+            <a href="javascript:void(0);" class="icon" onclick="menuResponsive()">
+            <i class="fa fa-bars"></i></a>
+        </div>
+    </div>
+    <h1>WELCOME TO CODEFORCES</h1>
+    <br>
+    <!--Removing placeholder: <p style="padding-left: 20px; text-decoration: overline; font-family: 'Oswald', sans-serif;" >
+       Lorem ipsum dolor sit amet consectetur, adipisicing elit. Totam praesentium libero harum, consequatur et quas beatae molestiae, commodi adipisci itaque nam eius id laboriosam neque veritatis a illum magni ratione porro alias iusto ipsum. Quia ad autem itaque error veritatis repellendus veniam quidem vel in delectus quisquam rerum aperiam dolore labore magni fugiat eaque repudiandae facilis, blanditiis velit qui esse! Blanditiis a veniam earum dolorum error eaque assumenda accusamus voluptatem dicta, optio laborum quisquam nulla dolorem, non rerum rem adipisci alias? Autem, obcaecati. Ducimus culpa omnis, dolores voluptas, voluptatem soluta atque aliquid vel exercitationem sequi enim ea temporibus praesentium! Iure.
+    </p>-->
+    <!--<div class="roundbox" style="width: 15em;margin: 2em auto;">
+        <div class="roundbox-lt">&nbsp;</div>
+        <div class="roundbox-rt">&nbsp;</div>-->
+    <div class = "login">
+        <!--<form action="" method="">
+        <fieldset>
+            <legend>Search for Codeforces user</legend>
+            <label for="username">Enter username:</label>
+            <input type="text" name="Handle" id="handle">
+            <br>
+            <br>
+            <input type="button" name="search" id="search" value="Search" onclick="getFORCES()">
+        </fieldset>
+        </form>-->
+        <div class="searchbox">
+            <input type="text" name="Handle" id="handle" class="handle" placeholder="Enter Codeforces Username"/>
+            <button id="search" class="search" onclick="getFORCES()">Search</button>
+        </div>    
+    </div>
+    <br>
+    <div class = "display" id="details">
+        <img src="./Images/profileicon.jpg" alt="User Profile Image" id="profileimg">
+        <table class="tabledetails">
+            <tbody>
+                <tr class="row1">
+                    <th>Handle:</th>
+                    <th><span id="handlename">xxxx</span></th>
+                </tr>
+                <tr>
+                    <td>Name:</td>
+                    <td><span class="name" id="name">xxxx</span></td>
+                </tr>
+                <tr>
+                    <td>Organization:</td>
+                    <td><span class="name" id="organization">xxxx</span></td>
+                </tr>
+                <tr>
+                    <td>Country:</td>
+                    <td><span class="name" id="country">xxxx</span></td>
+                </tr>
+                <tr>
+                    <td>City:</td>
+                    <td><span class="name" id="city">xxxx</span></td>
+                </tr>
+                <tr>
+                    <td>Max. Rank:</td>
+                    <td><span class="name" id="maxrank">0000</span></td>
+                </tr>
+                <tr>
+                    <td>Max. Rating:</td>
+                    <td><span class="name" id="maxrating">0000</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br> <br> <br>
+    <div class="contests">
+        <div class="contestlist">
+            <button id="displaycontests" onclick="viewCONTESTS()">View Contests</button>
+            <br>
+            <br>
+            <span>Id: </span><span id="contestid">0000</span>
+            <br>
+            <span>Name: </span><span id="contestname">xxxx</span>
+            <br>
+            <span>Duration: </span><span id="contestduration">0000 hours</span>
+            <br>
+            <span>Starting Date: </span><span id="contestdate">dd/mm/yyyy</span>
+            <br>
+            <span>Starting Time: </span><span id="contesttime">00:00:00</span>
+            <br>
+            <br>
+            <button id="previous" onclick="previousBUTTON()">Previous</button>
+            <button id="next" onclick="nextBUTTON()">Next</button>
+        </div>
+    </div>
+    <script>
+        function menuResponsive() {
+            var x = document.getElementById("tabs");
+            if (x.className === "menu") {
+                x.className += " responsive";
+            }
+            else {
+                x.className = "menu";
+            }
+        }
+        async function getFORCES()
+        {
+            var username = document.getElementById(`handle`).value;
+            const userapi_url = `https://codeforces.com/api/user.info?handles=${username}`
+            const response = await fetch(userapi_url);
+            const data = await response.json();
+            const{ titlePhoto, handle, firstName, lastName, organization, country, city, maxRank, maxRating, LastOnlineTimeSeconds } = data;
+            document.getElementById('profileimg').src = data.result[0].titlePhoto;
+            document.getElementById('handlename').innerHTML = data.result[0].handle;
+            document.getElementById('name').innerHTML = data.result[0].firstName + " " + data.result[0].lastName;
+            document.getElementById('organization').innerHTML = data.result[0].organization;
+            document.getElementById('country').innerHTML = data.result[0].country;
+            document.getElementById('city').innerHTML = data.result[0].city;
+            document.getElementById('maxrank').innerHTML = data.result[0].maxRank;
+            document.getElementById('maxrating').innerHTML = data.result[0].maxRating;
+            /**
+            console.log(data.result[0].titlePhoto);
+            console.log(data.result[0].handle);
+            console.log(data.result[0].firstName + " " + data.result[0].lastName);
+            console.log(data.result[0].organization);
+            console.log(data.result[0].country);
+            console.log(data.result[0].city);
+            console.log(data.result[0].maxRank);
+            console.log(data.result[0].maxRating);
+            console.log(data);
+            **/
+        }
+
+        var position = 0;
+        var data2;
+        async function viewCONTESTS()
+        {
+            const contestapi_url = `https://codeforces.com/api/contest.list?gym=false`;
+            const response2 = await fetch(contestapi_url);
+            data2 = await response2.json();
+            display();
+        }
+        async function display()
+        {
+            const{ id, name, durationSeconds, startTimeSeconds } = data2;
+            const date = new Date((data2.result[position].startTimeSeconds)*1000);
+            const startingDate = date.toLocaleDateString();
+            const startingTime = date.toLocaleTimeString();
+            document.getElementById('contestid').innerHTML = data2.result[position].id;
+            document.getElementById('contestname').innerHTML = data2.result[position].name;
+            document.getElementById('contestduration').innerHTML = (data2.result[position].durationSeconds/3600) + " hours";
+            document.getElementById('contestdate').innerHTML = startingDate;
+            document.getElementById('contesttime').innerHTML = startingTime;
+            /**
+            console.log(data2.result[position].id);
+            console.log(data2.result[position].name);
+            console.log(data2.result[position].durationSeconds);
+            console.log(data2.result[position].startTimeSeconds);
+            console.log(data2);
+            **/
+        }
+        async function previousBUTTON()
+        {
+            position--;
+            display();
+        }
+        async function nextBUTTON()
+        {
+            position++;
+            display();
+        }
+    </script>
+</body>
+</html>
